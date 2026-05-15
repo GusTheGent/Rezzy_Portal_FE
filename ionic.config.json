@@ -1,0 +1,7 @@
+{
+  "name": "Rezzy_Portal_FE",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
