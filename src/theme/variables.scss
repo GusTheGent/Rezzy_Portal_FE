@@ -1,2 +1,26 @@
-// For information on how to create your own theme, please refer to:
-// https://ionicframework.com/docs/theming/
+:root {
+  --ion-color-primary: #ff8c00;
+  --ion-color-primary-rgb: 255, 140, 0;
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #e07b00;
+  --ion-color-primary-tint: #ff981a;
+
+
+  --ion-color-rezzy-gold: #ffcc00;
+  --ion-color-rezzy-gold-rgb: 255, 204, 0;
+  --ion-color-rezzy-gold-contrast: #000000;
+  --ion-color-rezzy-gold-contrast-rgb: 0, 0, 0;
+  --ion-color-rezzy-gold-shade: #e0b400;
+  --ion-color-rezzy-gold-tint: #ffd11a;
+}
+
+.ion-color-rezzy-gold {
+  --ion-color-base: var(--ion-color-rezzy-gold);
+  --ion-color-base-rgb: var(--ion-color-rezzy-gold-rgb);
+  --ion-color-contrast: var(--ion-color-rezzy-gold-contrast);
+  --ion-color-contrast-rgb: var(--ion-color-rezzy-gold-contrast-rgb);
+  --ion-color-shade: var(--ion-color-rezzy-gold-shade);
+  --ion-color-tint: var(--ion-color-rezzy-gold-tint);
+}
+

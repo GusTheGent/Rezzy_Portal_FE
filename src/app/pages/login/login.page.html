@@ -1,0 +1,35 @@
+<ion-content [fullscreen]="true">
+  <div class="login-container">
+    <ion-img src="assets/images/app_login_logo.png" class="app-logo-login" />
+    <form [formGroup]="loginForm">
+      <ion-card class="ion-text-center ion-padding">
+        <ion-card-header>
+          <ion-card-title>Login</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+          <ion-item>
+            <ion-input
+              type="text"
+              label="Username"
+              labelPlacement="floating"
+              placeholder="Enter your username"
+              formControlName="username"
+            />
+          </ion-item>
+          <ion-item>
+            <ion-input
+              type="password"
+              label="Password"
+              labelPlacement="floating"
+              placeholder="Enter your password"
+              formControlName="password"
+            />
+          </ion-item>
+        </ion-card-content>
+        <ion-button fill="solid" color="primary"
+          >Submit <ion-icon name="log-in-outline" slot="end"></ion-icon
+        ></ion-button>
+      </ion-card>
+    </form>
+  </div>
+</ion-content>
