@@ -6,9 +6,26 @@
   </ion-header>
   <ion-content class="ion-padding">
     <ion-list>
-      <ion-item button><ion-icon name="create-outline" slot="start"/>Design your place</ion-item>
-      <ion-item button><ion-icon name="list-outline" slot="start"/>Reservations</ion-item>
-      <ion-item button><ion-icon name="settings-outline" slot="start"/>Settings</ion-item>
+      @for (routeItem of routeItems; track routeItem.title) {
+        <ion-menu-toggle>
+          <ion-item
+            routerDirection="root"
+            [routerLink]="[routeItem.url]"
+            lines="none"
+            detail="false"
+            routerLinkActive="selected"
+            [disabled]="routeItem.disabled"
+          >
+            <ion-icon
+              aria-hidden="true"
+              slot="start"
+              [ios]="routeItem.icon + '-outline'"
+              [md]="routeItem.icon + '-sharp'"
+            ></ion-icon>
+            <ion-label>{{ routeItem.title }}</ion-label>
+          </ion-item>
+        </ion-menu-toggle>
+      }
     </ion-list>
   </ion-content>
 </ion-menu>
