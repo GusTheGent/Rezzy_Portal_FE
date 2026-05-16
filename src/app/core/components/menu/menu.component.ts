@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { routeItems } from './helpers/routeItems';
 
 @Component({
   selector: 'rezzy-menu',
@@ -6,11 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./menu.component.scss'],
   standalone: false,
 })
-export class MenuComponent implements OnInit {
-
-  ngOnInit() {
-
-  }
-
+export class MenuComponent {
+  public routeItems = routeItems;
 
 }
