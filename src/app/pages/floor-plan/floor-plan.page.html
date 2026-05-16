@@ -1,12 +1,60 @@
-<ion-content>
-  <div class="floor-plan-container">
-    <ion-card class="ion-no-margin" style="width: 90%; max-width: 500px;">
-      <ion-card-header>
-        <ion-card-title>Floor Plan</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        Start designing your layout...
-      </ion-card-content>
-    </ion-card>
+<ion-content [fullscreen]="true">
+  <div class="designer-workspace">
+    <div class="toolbar-actions ion-padding-bottom">
+      <ion-button fill="solid" color="primary" (click)="addDiningTable('circle')">
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon> Round Table
+      </ion-button>
+
+      <ion-button fill="outline" color="primary" (click)="addDiningTable('rectangle')">
+        <ion-icon slot="start" name="square-outline"></ion-icon> Square Table
+      </ion-button>
+
+      <ion-button fill="outline" color="primary" (click)="addDiningTable('oval')">
+        <ion-icon slot="start" name="ellipse-outline"></ion-icon> Oval Table
+      </ion-button>
+
+      <ion-button fill="outline" color="primary" (click)="addDiningTable('long-rectangle')">
+        <ion-icon slot="start" name="reorder-four-outline"></ion-icon> Rectangle Table
+      </ion-button>
+
+      <ion-button fill="solid" color="dark" (click)="spawnStructuralRoom()">
+        <ion-icon slot="start" name="business-outline"></ion-icon> Spawn Room Block
+      </ion-button>
+
+      <ion-button fill="outline" color="secondary" (click)="spawnTextLabel()">
+        <ion-icon slot="start" name="text-outline"></ion-icon> Add Text Label
+      </ion-button>
+
+      <ion-button fill="solid" color="success" (click)="saveFloorPlan()">
+        <ion-icon slot="start" name="save-outline"></ion-icon> Save Layout
+      </ion-button>
+
+      @if (selectedNode) {
+      <ion-button fill="solid" color="danger" (click)="deleteSelectedTable()">
+        <ion-icon slot="start" name="trash-outline"></ion-icon> Delete Selected
+      </ion-button>
+      }
+
+      <ion-button fill="clear" color="danger" (click)="clearWholeCanvas()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon> Clear All
+      </ion-button>
+    </div>
+
+    <div #canvasContainer class="konva-stage-container"></div>
+
+    <div class="metrics-summary-panel">
+      <h3>Layout Summary</h3>
+      <hr />
+
+      <div class="metric-counter-card">
+        <div class="metric-value">{{ totalRoomsCount }}</div>
+        <div class="metric-label">Total Rooms</div>
+      </div>
+
+      <div class="metric-counter-card">
+        <div class="metric-value">{{ totalTablesCount }}</div>
+        <div class="metric-label">Total Tables</div>
+      </div>
+    </div>
   </div>
 </ion-content>
