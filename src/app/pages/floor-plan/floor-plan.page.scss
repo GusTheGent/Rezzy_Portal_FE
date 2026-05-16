@@ -21,6 +21,100 @@
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   }
 
+  .canvas-center-stack {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+
+    /* TAB CONTROL STYLES */
+    .level-tabs-bar {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      background: #e2e8f0;
+      padding: 6px;
+      border-radius: 8px;
+      gap: 8px;
+      width: 1050px;
+
+      .level-tab-item {
+        background: #f1f5f9;
+        color: #475569;
+        padding: 8px 14px;
+        border-radius: 6px;
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        transition: all 0.2s ease;
+        border: 1px solid transparent;
+
+        &:hover {
+          background: #cbd5e1;
+        }
+
+        &.active-tab {
+          background: #ffffff;
+          color: #ff8c00;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06);
+          border-color: #cbd5e1;
+        }
+
+        .environment-badge {
+          font-size: 10px;
+          text-transform: uppercase;
+          background: #e2e8f0;
+          color: #64748b;
+          padding: 2px 6px;
+          border-radius: 4px;
+          font-weight: bold;
+
+          &.outdoor {
+            background: #d1e7dd;
+            color: #0f5132;
+          }
+        }
+
+        .delete-level-icon {
+          font-size: 16px;
+          color: #94a3b8;
+          margin-left: 4px;
+          border-radius: 50%;
+          transition:
+            color 0.15s ease,
+            background 0.15s ease;
+
+          &:hover {
+            color: #ef4444;
+            background: rgba(239, 68, 68, 0.1);
+          }
+        }
+      }
+
+      .add-level-btn {
+        background: transparent;
+        border: 1px dashed #94a3b8;
+        color: #475569;
+        font-weight: 600;
+        font-size: 13px;
+        padding: 7px 12px;
+        border-radius: 6px;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+
+        &:hover {
+          background: rgba(255, 255, 255, 0.4);
+          border-color: #ff8c00;
+          color: #ff8c00;
+        }
+      }
+    }
+  }
+
   .konva-stage-container {
     background-color: #ffffff;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
@@ -28,6 +122,11 @@
     overflow: hidden;
     width: 1050px;
     height: 720px;
+    transition: background-color 0.3s ease;
+
+    &.outdoor-canvas-theme {
+      background-color: #f1f6ec;
+    }
   }
 
   .metrics-summary-panel {
@@ -35,7 +134,7 @@
     flex-direction: column;
     gap: 16px;
     width: auto;
-    min-width: 200px;
+    min-width: 220px;
     background: #ffffff;
     padding: 16px;
     border-radius: 8px;
@@ -76,6 +175,39 @@
         color: #64748b;
         text-transform: uppercase;
         letter-spacing: 0.5px;
+      }
+    }
+
+    .level-settings-box {
+      h4 {
+        margin: 0 0 8px 0;
+        font-size: 13px;
+        font-weight: 700;
+        color: #475569;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+
+      ion-item {
+        --background: #f8fafc;
+        border: 1px solid #e2e8f0;
+        border-radius: 6px;
+        font-size: 13px;
+        color: #334155;
+        margin-bottom: 12px;
+
+        ion-label[position="stacked"] {
+          font-size: 11px;
+          font-weight: bold;
+          color: #64748b;
+          text-transform: uppercase;
+          margin-bottom: 4px;
+        }
+
+        ion-input {
+          font-weight: 600;
+          color: #1e293b;
+        }
       }
     }
   }
