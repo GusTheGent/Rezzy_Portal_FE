@@ -1,12 +1,142 @@
-<ion-content>
-  <div class="floor-plan-container">
-    <ion-card class="ion-no-margin" style="width: 90%; max-width: 500px;">
-      <ion-card-header>
-        <ion-card-title>Floor Plan</ion-card-title>
-      </ion-card-header>
-      <ion-card-content>
-        Start designing your layout...
-      </ion-card-content>
-    </ion-card>
+<ion-content [fullscreen]="true">
+  <div class="designer-workspace">
+    <div class="toolbar-actions ion-padding-bottom">
+      <ion-button
+        fill="solid"
+        color="primary"
+        (click)="addDiningTable('circle')"
+      >
+        <ion-icon slot="start" name="add-circle-outline"></ion-icon> Round Table
+      </ion-button>
+
+      <ion-button
+        fill="outline"
+        color="primary"
+        (click)="addDiningTable('rectangle')"
+      >
+        <ion-icon slot="start" name="square-outline"></ion-icon> Square Table
+      </ion-button>
+
+      <ion-button
+        fill="outline"
+        color="primary"
+        (click)="addDiningTable('oval')"
+      >
+        <ion-icon slot="start" name="ellipse-outline"></ion-icon> Oval Table
+      </ion-button>
+
+      <ion-button
+        fill="outline"
+        color="primary"
+        (click)="addDiningTable('long-rectangle')"
+      >
+        <ion-icon slot="start" name="reorder-four-outline"></ion-icon> Rectangle
+        Table
+      </ion-button>
+
+      <ion-button fill="solid" color="dark" (click)="spawnStructuralRoom()">
+        <ion-icon slot="start" name="business-outline"></ion-icon> Spawn Room
+        Block
+      </ion-button>
+
+      <ion-button fill="outline" color="secondary" (click)="spawnTextLabel()">
+        <ion-icon slot="start" name="text-outline"></ion-icon> Add Text Label
+      </ion-button>
+
+      <ion-button fill="solid" color="success" (click)="saveFloorPlan()">
+        <ion-icon slot="start" name="save-outline"></ion-icon> Save Layout
+      </ion-button>
+
+      @if (selectedNode) {
+      <ion-button fill="solid" color="danger" (click)="deleteSelectedTable()">
+        <ion-icon slot="start" name="trash-outline"></ion-icon> Delete Selected
+      </ion-button>
+      }
+
+      <ion-button fill="clear" color="danger" (click)="clearWholeCanvas()">
+        <ion-icon slot="start" name="refresh-outline"></ion-icon> Clear All
+      </ion-button>
+    </div>
+
+    <div class="canvas-center-stack">
+      <div class="level-tabs-bar">
+        @for (level of floorLevels; track level.id; let idx = $index) {
+        <div
+          class="level-tab-item"
+          [class.active-tab]="idx === currentFloorIndex"
+          (click)="selectFloorLevel(idx)"
+        >
+          <span class="level-tab-title">{{ level.name }}</span>
+          <span
+            class="environment-badge"
+            [class.outdoor]="level.environment === 'outdoors'"
+          >
+            {{ level.environment }}
+          </span>
+
+          @if (floorLevels.length > 1) {
+          <ion-icon
+            name="close-circle-outline"
+            class="delete-level-icon"
+            (click)="removeFloorLevel(idx, $event)"
+          >
+          </ion-icon>
+          }
+        </div>
+        }
+        <button class="add-level-btn" (click)="addNewFloorLevelPrompt()">
+          <ion-icon name="add-outline"></ion-icon> Add Level
+        </button>
+      </div>
+
+      <div
+        #canvasContainer
+        class="konva-stage-container"
+        [class.outdoor-canvas-theme]="floorLevels[currentFloorIndex]?.environment === 'outdoors'"
+      ></div>
+    </div>
+
+    <div class="metrics-summary-panel">
+      <h3>Layout Summary</h3>
+      <hr />
+
+      <div class="metric-counter-card">
+        <div class="metric-value">{{ floorLevels.length }}</div>
+        <div class="metric-label">Total Floor Levels</div>
+      </div>
+
+      <div class="metric-counter-card">
+        <div class="metric-value">{{ totalRoomsCount }}</div>
+        <div class="metric-label">Current Floor Rooms</div>
+      </div>
+
+      <div class="metric-counter-card">
+        <div class="metric-value">{{ totalTablesCount }}</div>
+        <div class="metric-label">Current Floor Tables</div>
+      </div>
+
+      <hr />
+     <div class="level-settings-box">
+        <h4>Floor Context</h4>
+
+        <ion-item lines="none" class="ion-margin-bottom">
+          <ion-label position="stacked">Level Name</ion-label>
+          <ion-input
+            type="text"
+            [value]="floorLevels[currentFloorIndex]?.name"
+            (ionInput)="changeCurrentFloorName($event)"
+            placeholder="e.g. Ground Floor">
+          </ion-input>
+        </ion-item>
+
+        <ion-item lines="none">
+          <ion-label>Environment</ion-label>
+          <ion-select  [value]="floorLevels[currentFloorIndex]?.environment" (ionChange)="changeCurrentFloorEnvironment($event)">
+            <ion-select-option value="indoors">Indoors</ion-select-option>
+            <ion-select-option value="outdoors">Outdoors</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+    </div>
   </div>
 </ion-content>
