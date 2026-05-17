@@ -20,6 +20,11 @@ const routes: Routes = [
     path: RoutePath.FLOOR_PLAN,
     loadChildren: () => import('./pages/floor-plan/floor-plan.module').then( m => m.FloorPlanPageModule)
   },
+  {
+    path: RoutePath.SETTINGS,
+    loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+
 ];
 
 @NgModule({

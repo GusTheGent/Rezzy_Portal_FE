@@ -4,8 +4,12 @@ import {
   ElementRef,
   ViewChild,
   HostListener,
+  inject,
+  OnDestroy,
 } from '@angular/core';
 import Konva from 'konva';
+import { Subscription } from 'rxjs';
+import { ThemeService } from 'src/app/shared/services/theme.service';
 
 interface FloorLevel {
   id: string;
@@ -14,13 +18,38 @@ interface FloorLevel {
   nodes: Konva.Group[];
 }
 
+const CANVAS_PALETTES = {
+  light: {
+    canvasBg: '#ffffff',
+    gridLineIndoors: '#e2e8f0',
+    gridLineOutdoors: '#e2ebd5',
+    roomWall: '#1e293b',
+    tableFillIndoor: '#ff8c00',
+    tableStrokeIndoor: '#e07b00',
+    tableFillOutdoor: '#2e7d32',
+    tableStrokeOutdoor: '#1b5e20',
+    textLabelFill: '#334155',
+  },
+  dark: {
+    canvasBg: '#152242',
+    gridLineIndoors: '#223147',
+    gridLineOutdoors: '#2d3d30',
+    roomWall: '#cbd0d8',
+    tableFillIndoor: '#ff981a',
+    tableStrokeIndoor: '#ffcc00',
+    tableFillOutdoor: '#4caf50',
+    tableStrokeOutdoor: '#81c784',
+    textLabelFill: '#318ce7',
+  },
+};
+
 @Component({
   selector: 'rezzy-floor-plan',
   templateUrl: './floor-plan.page.html',
   styleUrls: ['./floor-plan.page.scss'],
   standalone: false,
 })
-export class FloorPlanPage implements AfterViewInit {
+export class FloorPlanPage implements AfterViewInit, OnDestroy {
   @ViewChild('canvasContainer', { static: false }) canvasContainer: ElementRef;
 
   private stage: Konva.Stage;
@@ -42,16 +71,78 @@ export class FloorPlanPage implements AfterViewInit {
 
   public totalRoomsCount = 0;
   public totalTablesCount = 0;
-
-  @HostListener('window:keydown', ['$event'])
-  handleKeyboardEvent(event: KeyboardEvent) {
-    if (event.key === 'Delete' || event.key === 'Backspace') {
-      this.deleteSelectedTable();
-    }
-  }
+  public themeService = inject(ThemeService);
+  private themeSubscription: Subscription;
 
   ngAfterViewInit() {
     this.initFloorPlanCanvas();
+    this.listenToGlobalThemeChanges();
+  }
+
+  ngOnDestroy() {
+    if (this.themeSubscription) {
+      this.themeSubscription.unsubscribe();
+    }
+  }
+
+  private listenToGlobalThemeChanges() {
+    const observer = new MutationObserver((mutations) => {
+      mutations.forEach((mutation) => {
+        if (mutation.attributeName === 'data-app-theme') {
+          this.applyActiveThemeToCanvasObjects();
+        }
+      });
+    });
+
+    observer.observe(document.documentElement, {
+      attributes: true,
+      attributeFilter: ['data-app-theme'],
+    });
+  }
+
+  public applyActiveThemeToCanvasObjects() {
+    const activeTheme = this.themeService.currentTheme || 'light';
+    const palette = CANVAS_PALETTES[activeTheme];
+    if (this.canvasContainer && this.canvasContainer.nativeElement) {
+      this.canvasContainer.nativeElement.style.backgroundColor =
+        palette.canvasBg;
+    }
+
+    this.drawBackgroundGrid();
+
+    const currentEnvironment =
+      this.floorLevels[this.currentFloorIndex]?.environment || 'indoors';
+    const isOutdoor = currentEnvironment === 'outdoors';
+
+    this.placedObjects.forEach((group) => {
+      const nameToken = group.name() || '';
+
+      if (nameToken.includes('architectural-room')) {
+        const wallLine = group.findOne('.room-wall-segments') as Konva.Line;
+        if (wallLine) {
+          wallLine.stroke(palette.roomWall);
+        }
+      } else if (nameToken.includes('furniture-table')) {
+        const mainShape = group.findOne('.main-shape') as Konva.Shape;
+        if (mainShape) {
+          mainShape.fill(
+            isOutdoor ? palette.tableFillOutdoor : palette.tableFillIndoor,
+          );
+          mainShape.stroke(
+            isOutdoor ? palette.tableStrokeOutdoor : palette.tableStrokeIndoor,
+          );
+        }
+      } else if (nameToken.includes('annotation-text-group')) {
+        const textShape = group.findOne('.core-text-shape') as Konva.Text;
+        if (textShape) {
+          textShape.fill(palette.textLabelFill);
+        }
+      }
+    });
+
+    if (this.layer) {
+      this.layer.batchDraw();
+    }
   }
 
   private initFloorPlanCanvas() {
@@ -69,6 +160,8 @@ export class FloorPlanPage implements AfterViewInit {
     this.layer = new Konva.Layer();
     this.stage.add(this.gridLayer);
     this.stage.add(this.layer);
+
+    this.applyActiveThemeToCanvasObjects();
 
     this.drawBackgroundGrid();
 
@@ -151,18 +244,17 @@ export class FloorPlanPage implements AfterViewInit {
 
     this.drawBackgroundGrid();
     this.layer.batchDraw();
+    this.applyActiveThemeToCanvasObjects();
     this.recalculateAggregateCounts();
   }
 
-  public addNewFloorLevelPrompt() {
+  public addNewFloorLevel() {
     const defaultName = `Level ${this.floorLevels.length + 1}`;
-    const levelName = prompt('Enter Level/Floor Identity Name:', defaultName);
-    if (!levelName) return;
 
     const newId = `level-${Date.now()}`;
     this.floorLevels.push({
       id: newId,
-      name: levelName,
+      name: defaultName,
       environment: 'indoors',
       nodes: [],
     });
@@ -221,6 +313,7 @@ export class FloorPlanPage implements AfterViewInit {
   public changeCurrentFloorEnvironment(event: any) {
     const environmentSetting = event.detail.value as 'indoors' | 'outdoors';
     this.floorLevels[this.currentFloorIndex].environment = environmentSetting;
+    this.applyActiveThemeToCanvasObjects();
     this.drawBackgroundGrid();
   }
 
@@ -287,6 +380,7 @@ export class FloorPlanPage implements AfterViewInit {
     this.selectNode(roomGroup);
 
     this.recalculateAggregateCounts();
+    this.applyActiveThemeToCanvasObjects();
   }
 
   private setupCommonEventHandlers(group: Konva.Group) {

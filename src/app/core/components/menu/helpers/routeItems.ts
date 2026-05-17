@@ -22,7 +22,7 @@ export const routeItems: IRouteItem[] = [
   },
   {
     title: 'Settings',
-    url: `/`,
+    url: `/${RoutePath.SETTINGS}`,
     icon: 'settings',
     disabled: false
   }
