@@ -298,27 +298,33 @@ export class FloorPlanPage implements AfterViewInit {
     });
 
     group.on('dragmove', (e) => {
-      const absPos = group.getAbsolutePosition();
-      group.setAbsolutePosition({
-        x: Math.round(absPos.x / this.GRID_SIZE) * this.GRID_SIZE,
-        y: Math.round(absPos.y / this.GRID_SIZE) * this.GRID_SIZE,
+      group.position({
+        x: Math.round(group.x() / this.GRID_SIZE) * this.GRID_SIZE,
+        y: Math.round(group.y() / this.GRID_SIZE) * this.GRID_SIZE,
       });
     });
 
     group.on('transform', (e) => {
+      const snapAngle = 45;
+      const currentRotation = group.rotation();
+      group.rotation(Math.round(currentRotation / snapAngle) * snapAngle);
+      this.layer.batchDraw();
+    });
+
+    group.on('transformend', (e) => {
       const groupNode = group;
       const scaleX = groupNode.scaleX();
       const scaleY = groupNode.scaleY();
 
-      const snapAngle = 45;
-      const currentRotation = groupNode.rotation();
-      groupNode.rotation(Math.round(currentRotation / snapAngle) * snapAngle);
-
       if (groupNode.name() === 'architectural-room') {
         const wallLine = groupNode.findOne('.room-wall-segments') as Konva.Line;
         if (wallLine) {
-          const newW = Math.round((groupNode.width() * scaleX) / this.GRID_SIZE) * this.GRID_SIZE;
-          const newH = Math.round((groupNode.height() * scaleY) / this.GRID_SIZE) * this.GRID_SIZE;
+          const newW =
+            Math.round((groupNode.width() * scaleX) / this.GRID_SIZE) *
+            this.GRID_SIZE;
+          const newH =
+            Math.round((groupNode.height() * scaleY) / this.GRID_SIZE) *
+            this.GRID_SIZE;
 
           groupNode.width(newW);
           groupNode.height(newH);
@@ -365,7 +371,14 @@ export class FloorPlanPage implements AfterViewInit {
 
       groupNode.scaleX(1);
       groupNode.scaleY(1);
+
+      groupNode.position({
+        x: Math.round(groupNode.x() / this.GRID_SIZE) * this.GRID_SIZE,
+        y: Math.round(groupNode.y() / this.GRID_SIZE) * this.GRID_SIZE,
+      });
+
       this.layer.batchDraw();
+      this.recalculateAggregateCounts();
     });
 
     group.on('click tap', (e) => {
@@ -567,7 +580,7 @@ export class FloorPlanPage implements AfterViewInit {
     const spawnX = 200 + ((this.placedObjects.length * 30) % 120);
     const spawnY = 200 + ((this.placedObjects.length * 30) % 120);
 
-    const textGroup = new Konva.Group({
+    const textLabel = new Konva.Label({
       x: spawnX,
       y: spawnY,
       width: 180,
@@ -577,30 +590,40 @@ export class FloorPlanPage implements AfterViewInit {
       name: 'annotation-text-group',
     });
 
+    textLabel.add(
+      new Konva.Tag({
+        fill: '#f8fafc',
+        stroke: '#cbd5e1',
+        strokeWidth: 1,
+        cornerRadius: 6,
+      }),
+    );
+
     const labelItem = new Konva.Text({
       text: 'Double click to edit text',
-      fontSize: 16,
+      fontSize: 15,
       fontFamily: 'sans-serif',
       fontStyle: 'normal',
       fill: '#334155',
       align: 'center',
       verticalAlign: 'middle',
-      padding: 8,
+      padding: 10,
       width: 180,
       height: 40,
       name: 'core-text-shape',
     });
 
-    textGroup.add(labelItem);
-    this.setupCommonEventHandlers(textGroup);
+    textLabel.add(labelItem);
 
-    textGroup.on('dblclick dbltap', () => {
-      this.runInlineTextEditor(labelItem, textGroup);
+    this.setupCommonEventHandlers(textLabel);
+
+    textLabel.on('dblclick dbltap', () => {
+      this.runInlineTextEditor(labelItem, textLabel);
     });
 
-    this.placedObjects.push(textGroup);
-    this.layer.add(textGroup);
-    this.selectNode(textGroup);
+    this.placedObjects.push(textLabel);
+    this.layer.add(textLabel);
+    this.selectNode(textLabel);
   }
 
   public getSavePayload(): any {
@@ -801,6 +824,7 @@ export class FloorPlanPage implements AfterViewInit {
     };
 
     textarea.addEventListener('keydown', (e) => {
+      e.stopPropagation();
       if (e.key === 'Enter' && !e.shiftKey) {
         e.preventDefault();
         removeTextarea();
