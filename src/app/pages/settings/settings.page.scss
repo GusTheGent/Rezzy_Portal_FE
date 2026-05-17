@@ -1,0 +1,105 @@
+.settings-viewport-content {
+  --background: var(--ion-background-color);
+
+  .page-title-header {
+    padding: 12px 8px 20px 8px;
+    text-align: left;
+
+    h1 {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--ion-text-color);
+      margin: 0;
+    }
+  }
+  .settings-max-container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 12px 4px;
+  }
+
+  .settings-card {
+    margin: 0 0 20px 0;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+    border: 1px solid rgba(var(--ion-text-color-rgb), 0.08);
+    background: var(--ion-card-background);
+
+    ion-card-header {
+      border-bottom: 1px solid rgba(var(--ion-text-color-rgb), 0.06);
+      padding: 16px;
+    }
+  }
+
+  .section-title {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--ion-text-color);
+    margin: 0;
+
+    .title-icon {
+      margin-right: 10px;
+      font-size: 20px;
+      color: var(--ion-color-primary);
+    }
+  }
+
+  .theme-toggle-row {
+    --padding-start: 0px;
+    --inner-padding-end: 0px;
+    background: transparent;
+
+    h2 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--ion-text-color);
+      margin: 0 0 4px 0;
+    }
+
+    p {
+      font-size: 12px;
+      color: rgba(var(--ion-text-color-rgb), 0.6);
+      margin: 0;
+    }
+  }
+
+  .toggle-mode-label {
+    font-size: 13px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding-right: 4px;
+  }
+
+  .custom-input-item {
+    --padding-start: 0px;
+    --background: transparent;
+    color: var(--ion-text-color);
+
+    ion-label {
+      color: rgba(var(--ion-text-color-rgb), 0.7);
+      font-weight: 500;
+      font-size: 13px;
+    }
+
+    ion-input,
+    ion-select {
+      --color: var(--ion-text-color);
+      font-size: 14px;
+    }
+  }
+
+  .action-footer-buttons {
+    margin-top: 32px;
+    padding: 0 8px;
+
+    ion-button {
+      --border-radius: 8px;
+      font-weight: 600;
+      height: 44px;
+    }
+  }
+}

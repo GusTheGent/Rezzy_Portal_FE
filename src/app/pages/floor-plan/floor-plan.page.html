@@ -84,15 +84,16 @@
           }
         </div>
         }
-        <button class="add-level-btn" (click)="addNewFloorLevelPrompt()">
+        <button class="add-level-btn" (click)="addNewFloorLevel()">
           <ion-icon name="add-outline"></ion-icon> Add Level
         </button>
       </div>
 
       <div
         #canvasContainer
-        class="konva-stage-container"
+        class="konva-stage-canvas-frame"
         [class.outdoor-canvas-theme]="floorLevels[currentFloorIndex]?.environment === 'outdoors'"
+        [style.background-color]="themeService.currentTheme === 'dark' ? '#0f172a' : '#ffffff'"
       ></div>
     </div>
 

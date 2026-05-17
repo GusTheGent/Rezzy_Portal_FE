@@ -1,0 +1,93 @@
+<ion-content class="ion-padding settings-viewport-content">
+  <div class="settings-max-container">
+
+    <div class="page-title-header">
+      <h1>Application Settings</h1>
+    </div>
+
+    <ion-card class="settings-card">
+      <ion-card-header>
+        <ion-card-title class="section-title">
+          <ion-icon name="color-palette-outline" class="title-icon"></ion-icon>
+          Appearance Configuration
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item lines="none" class="theme-toggle-row">
+          <ion-label>
+            <h2>App Environment Theme</h2>
+            <p>Explicit configuration override isolated from system defaults.</p>
+          </ion-label>
+
+          <ion-toggle
+            slot="end"
+            [checked]="themeService.currentTheme === 'dark'"
+            (ionChange)="handleThemeChange($event)"
+            color="success">
+            <span class="toggle-mode-label">
+              {{ themeService.currentTheme === 'dark' ? 'Dark' : 'Light' }} Mode
+            </span>
+          </ion-toggle>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="settings-card">
+      <ion-card-header>
+        <ion-card-title class="section-title">
+          <ion-icon name="person-circle-outline" class="title-icon"></ion-icon>
+          User Identity & Account
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item fill="outline" class="ion-margin-bottom custom-input-item">
+          <ion-label position="stacked">Display Name</ion-label>
+          <ion-input type="text" [(ngModel)]="userProfile.displayName" placeholder="Enter full name"></ion-input>
+        </ion-item>
+
+        <ion-item fill="outline" class="ion-margin-bottom custom-input-item">
+          <ion-label position="stacked">Associated Email Address</ion-label>
+          <ion-input type="email" [(ngModel)]="userProfile.email" placeholder="Enter email target address"></ion-input>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card class="settings-card">
+      <ion-card-header>
+        <ion-card-title class="section-title">
+          <ion-icon name="options-outline" class="title-icon"></ion-icon>
+          Preferences & Synchronization
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <ion-item lines="inset" class="custom-input-item">
+          <ion-label>Push Notifications Alerting</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="userProfile.notificationsEnabled" color="primary"></ion-toggle>
+        </ion-item>
+
+        <ion-item lines="none" class="custom-input-item">
+          <ion-label>Layout Live Synced Interval</ion-label>
+          <ion-select [(ngModel)]="userProfile.syncInterval" interface="popover">
+            <ion-select-option value="15">Every 15 Minutes</ion-select-option>
+            <ion-select-option value="30">Every 30 Minutes</ion-select-option>
+            <ion-select-option value="60">Hourly</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </ion-card-content>
+    </ion-card>
+
+    <div class="action-footer-buttons">
+      <ion-button fill="solid" color="primary" expand="block" (click)="saveProfileChanges()">
+        <ion-icon slot="start" name="save-outline"></ion-icon> Save Setup Modifications
+      </ion-button>
+
+      <ion-button fill="outline" color="danger" expand="block" class="ion-margin-top" (click)="resetLocalLayoutCache()">
+        <ion-icon slot="start" name="trash-outline"></ion-icon> Clear Floor Plan Cache
+      </ion-button>
+    </div>
+
+  </div>
+</ion-content>

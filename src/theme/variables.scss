@@ -24,3 +24,21 @@
   --ion-color-tint: var(--ion-color-rezzy-gold-tint);
 }
 
+html[data-app-theme="dark"] {
+  --ion-background-color: #0f172a;
+  --ion-background-color-rgb: 15, 23, 42;
+
+  --ion-text-color: #f8fafc;
+  --ion-text-color-rgb: 248, 250, 252;
+
+  --ion-item-background: #1e293b;
+  --ion-card-background: #1e293b;
+  --ion-toolbar-background: #0f172a;
+
+  --ion-color-step-50: #1e293b;
+  --ion-color-step-100: #223147;
+  --ion-color-step-150: #2d3d57;
+  --ion-color-step-200: #3b4d66;
+  --ion-color-step-850: #cbd5e1;
+  --ion-color-step-900: #e2e8f0;
+}

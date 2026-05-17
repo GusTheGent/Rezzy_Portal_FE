@@ -4,7 +4,7 @@
   align-items: flex-start;
   justify-content: center;
   height: 100%;
-  background-color: #f4f5f7;
+  background-color: var(--ion-background-color);
   padding: 24px;
   gap: 20px;
 
@@ -15,7 +15,7 @@
     width: auto;
     min-width: 200px;
     justify-content: flex-start;
-    background: #ffffff;
+    background-color: var(--ion-background-color);
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -26,12 +26,11 @@
     flex-direction: column;
     gap: 10px;
 
-    /* TAB CONTROL STYLES */
     .level-tabs-bar {
       display: flex;
       flex-direction: row;
       align-items: center;
-      background: #e2e8f0;
+      background-color: var(--ion-background-color);
       padding: 6px;
       border-radius: 8px;
       gap: 8px;
@@ -116,7 +115,7 @@
   }
 
   .konva-stage-container {
-    background-color: #ffffff;
+    background-color: var(--ion-background-color);
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
     border-radius: 8px;
     overflow: hidden;
@@ -135,7 +134,7 @@
     gap: 16px;
     width: auto;
     min-width: 220px;
-    background: #ffffff;
+    background-color: var(--ion-background-color);
     padding: 16px;
     border-radius: 8px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
@@ -144,7 +143,7 @@
       margin: 0;
       font-size: 16px;
       font-weight: bold;
-      color: #1e293b;
+      color: var(--ion-text-color);
       text-align: center;
     }
 
@@ -156,7 +155,7 @@
     }
 
     .metric-counter-card {
-      background: #f8fafc;
+      background-color: var(--ion-background-color);
       border: 1px solid #e2e8f0;
       border-radius: 6px;
       padding: 12px;
@@ -172,7 +171,7 @@
       .metric-label {
         font-size: 12px;
         font-weight: 600;
-        color: #64748b;
+        color: var(--ion-text-color);
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
@@ -183,13 +182,13 @@
         margin: 0 0 8px 0;
         font-size: 13px;
         font-weight: 700;
-        color: #475569;
+        color: var(--ion-text-color);
         text-transform: uppercase;
         letter-spacing: 0.5px;
       }
 
       ion-item {
-        --background: #f8fafc;
+        background-color: var(--ion-background-color);
         border: 1px solid #e2e8f0;
         border-radius: 6px;
         font-size: 13px;
@@ -199,14 +198,14 @@
         ion-label[position="stacked"] {
           font-size: 11px;
           font-weight: bold;
-          color: #64748b;
+          color: var(--ion-text-color);
           text-transform: uppercase;
           margin-bottom: 4px;
         }
 
         ion-input {
           font-weight: 600;
-          color: #1e293b;
+          color: var(--ion-text-color);
         }
       }
     }

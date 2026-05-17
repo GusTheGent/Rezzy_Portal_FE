@@ -7,6 +7,7 @@ export enum RoutePath {
   HOME = 'home',
   LOGIN = 'login',
   FLOOR_PLAN = 'floor-plan',
+  SETTINGS = 'settings',
   ID_PATH = ':id',
   ORIGIN_PATH = ':origin',
   ERROR = 'error-page'
